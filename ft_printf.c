@@ -35,7 +35,12 @@ t_fn    fn_for_tag(char c)
 
 int     handle_flag(const char *format, va_list args, int i)
 {
-    (fn_for_tag(format[++i]))(va_arg(args, void*));
+    if (format[++i] == '%')
+    {
+        ft_putchar('%');
+        return (1);
+    }
+    (fn_for_tag(format[i]))(va_arg(args, void*));
     return (1);
 }
 
