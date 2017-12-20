@@ -1,0 +1,3 @@
+LIBNAME = libprintf.a
+
+SRCS = 
