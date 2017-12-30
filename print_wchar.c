@@ -17,8 +17,8 @@ char     *print_wchar(va_list args, t_format *format)
     char    *printable;
     char    *converted_wchar;
 
-    format->type->wc = va_arg(args, wchar_t);
-    converted_wchar = get_converted_wchar(format->type->wc);
+    format->type.wc = va_arg(args, wchar_t);
+    converted_wchar = get_converted_wchar(format->type.wc);
     if (width <= 1)
         return (converted_wchar);
     printable = ft_strnew(width - ft_strlen(converted_wchar));

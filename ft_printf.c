@@ -1,38 +1,5 @@
 # include "ft_printf.h"
 
-extern  void print_string(void *object);
-extern  void print_char(void *object);
-extern  void print_int(void *object);
-extern  void print_hexa_min(void *object);
-extern  void print_hexa_max(void *object);
-extern  void print_octal(void *object);
-
-t_fn    fn_list[7] = {
-    &print_string,
-    &print_char,
-    &print_int,
-    &print_int,
-    &print_hexa_min,
-    &print_hexa_max,
-    &print_octal
-};
-
-char    tag[7] = {
-    's', 'c', 'd', 'i', 'x', 'X', 'o'
-};
-
-t_fn    fn_for_tag(char c)
-{
-    int     i;
-
-    i = -1;
-    while (++i < 7) {
-        if (c == tag[i])
-            return (fn_list[i]);
-    }
-    return (NULL);
-}
-
 int     handle_flag(const char *format, va_list args, int i)
 {
     if (format[++i] == '%')

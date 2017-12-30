@@ -11,7 +11,7 @@ char     *print_char(va_list args, t_format *format)
     {
         printable = ft_strnew(1);
         printable[0] = c;
-        return (printable);
+        return (printable);format->type.c
     }
     printable = ft_strnew(width);
     if (format->minus_flag)
