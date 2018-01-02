@@ -8,9 +8,9 @@ static char 	*base_str(t_format *format)
 {
 	if (format->o_type)
 		return ("01234567");
-	if (format->x_flag)
+	if (format->x_type)
 		return ("0123456789abcdef");
-	if (format->X_flag)
+	if (format->X_type)
 		return ("0123456789ABCDEF");
 	return ("0123456789");
 }

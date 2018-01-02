@@ -8,6 +8,6 @@ char    *strcombine(char *s1, char *s2)
 
     tmp = s1;
     result = ft_strjoin(tmp, result);
-    ft_strdel(tmp);
+    ft_strdel(&tmp);
     return (result);
 }

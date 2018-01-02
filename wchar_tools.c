@@ -51,7 +51,7 @@ char            *get_converted_wchar(wchar_t wc)
 
     wc_value = (unsigned int)wc;
     if (wc_value <= 127)
-        return (get_one_byte(wc_value))
+        return (get_one_byte(wc_value));
     if (wc_value <= 2047)
         return (get_two_bytes(wc_value));
     if (wc_value <= 65535)

@@ -5,24 +5,24 @@ char     *print_char(va_list args, t_format *format)
     char    *printable;
 
     if (format->l_flag)
-        return (print_wchar(args, format))
-    format->type->c = va_arg(args, char);
-    if (width <= 1)
+        return (print_wchar(args, format));
+    format->type.c = (char)va_arg(args, int);
+    if (format->width <= 1)
     {
         printable = ft_strnew(1);
-        printable[0] = c;
-        return (printable);format->type.c
+        printable[0] = format->type.c;
+        return (printable);
     }
-    printable = ft_strnew(width);
+    printable = ft_strnew(format->width);
     if (format->minus_flag)
     {
-        ft_memset(printable + 1, width - 1, ' ');
-        printable[0] = c;
+        ft_memset(printable + 1, format->width - 1, ' ');
+        printable[0] = format->type.c;
     }
     else
     {
-        ft_memset(printable, width - 1, ' ');
-        printable[width - 1] = c;
+        ft_memset(printable, format->width - 1, ' ');
+        printable[format->width - 1] = format->type.c;
     }
     return (printable);
 }

@@ -22,7 +22,6 @@ static void	    fill_str(intmax_t nb, char *str, int size)
 	int		i;
 
 	i = size - 1;
-	nb *= (neg) ? -1 : 1;
 	while (nb != 0)
 	{
 		str[i--] = (nb % 10) + '0';
