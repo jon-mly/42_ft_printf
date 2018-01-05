@@ -58,10 +58,10 @@ char    *left_fill(t_format *format, int nb_len)
             len = 0;
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
-        ft_memset(fill, len, ' ');
+        ft_memset(fill, ' ', len);
         return (fill);
     }
-    return ("");
+    return (ft_strdup(""));
 }
 
 /*
@@ -86,9 +86,15 @@ char    *middle_fill(t_format *format, int nb_len)
             format->space_flag);
     else
         len = 0;
-    len = (len < 0) ? 0 : len;
+ft_putstr("LEN : "); ft_putnbr(len); ft_putchar('\n');
+    if (len <= 0)
+        return (ft_strdup(""));
+ft_putendl("STEP 6.1");
     fill = ft_strnew(len);
-    ft_memset(fill, len, '0');
+ft_putendl("STEP 6.2");
+    ft_memset(fill, '0', len);
+ft_putendl("STEP 6.3");
+ft_putendl(fill);
     return (fill);
 }
 
@@ -113,10 +119,10 @@ char    *right_fill(t_format *format, int nb_len)
             len = 0;
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
-        ft_memset(fill, len, ' ');
+        ft_memset(fill, ' ', len);
         return (fill);
     }
-    return ("");
+    return (ft_strdup(""));
 }
 
 char    *print_signed_nb(va_list args, t_format *format)
@@ -124,24 +130,33 @@ char    *print_signed_nb(va_list args, t_format *format)
     char    *printable;
     char    *converted_value;
 
+ft_putendl("STEP 1");
     load_signed_type(format, args);
+ft_putendl("STEP 2");
     converted_value = ft_absolute_signed_itoa(format->type.imax);
+ft_putendl(converted_value);
+ft_putendl("STEP 3");
     printable = ft_strnew(0);
+ft_putendl("STEP 4");
     printable = strcombine(printable,
         left_fill(format, ft_strlen(converted_value)));
+ft_putendl(printable);
+ft_putendl("STEP 5");
     if (format->type.imax < 0 || format->plus_flag || format->space_flag)
     {
         if (format->type.imax < 0)
-            printable = strcombine(printable, "-");
+            printable = strcombine(printable, ft_strdup("-"));
         else if (format->type.imax >= 0 && (format->plus_flag ||
             format->space_flag))
-            printable = strcombine(printable, (format->plus_flag) ? "+" : " ");
+            printable = strcombine(printable, (format->plus_flag) ? ft_strdup("+") : ft_strdup(" "));
     }
+ft_putendl("STEP 6");
     printable = strcombine(printable,
         middle_fill(format, ft_strlen(converted_value)));
+ft_putendl("STEP 7");
     printable = strcombine(printable, converted_value);
+ft_putendl("STEP 8");
     printable = strcombine(printable,
         right_fill(format, ft_strlen(converted_value)));
-    ft_strdel(&converted_value);
     return (printable);
 }

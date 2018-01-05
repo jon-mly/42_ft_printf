@@ -82,6 +82,11 @@ char            *get_converted_wchar(wchar_t wc);
 char            *ft_unsigned_itoa_base(uintmax_t nb, t_format *format);
 char    *ft_absolute_signed_itoa(intmax_t nb);
 char    *strcombine(char *s1, char *s2);
-int     ft_char_search(char *position, char *searched);
+int     ft_char_search(const char *position, char *searched);
+int     fetch_format_indicators(const char *position, t_format *format);
+int     fetch_size_modificators(const char *position, t_format *format);
+int     get_precision(const char *str, t_format *format, int i);
+int     get_width(const char *str, t_format *format, int i);
+char    *type_print(va_list args, t_format *format, const char *str, int i);
 
 #endif

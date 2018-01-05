@@ -43,7 +43,7 @@ void    load_unsigned_type(t_format *format, va_list args)
 ** Return the elements to be added before any sign
 ** Only concerns width without '-' or '0' flags
 */
-char    *left_fill(t_format *format, int nb_len)
+char    *left_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -76,7 +76,7 @@ char    *left_fill(t_format *format, int nb_len)
 ** If width + precision, concerns precision. If no precision, width.
 ** '0' flag is handled here.
 */
-char    *middle_fill(t_format *format, int nb_len)
+char    *middle_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -106,7 +106,7 @@ char    *middle_fill(t_format *format, int nb_len)
 ** Return the spaces to be added right after the number
 ** Only concerns minus flag if no precision
 */
-char    *right_fill(t_format *format, int nb_len)
+char    *right_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -134,7 +134,7 @@ char    *print_unsigned_nb(va_list args, t_format *format)
     converted_value = ft_unsigned_itoa_base(format->type.uimax, format);
     printable = ft_strnew(0);
     printable = strcombine(printable,
-        left_fill(format, ft_strlen(converted_value)));
+        left_u_fill(format, ft_strlen(converted_value)));
     if (format->sharp_flag && format->type.uimax > 0)
     {
         if (format->o_type)
@@ -145,10 +145,10 @@ char    *print_unsigned_nb(va_list args, t_format *format)
             printable = strcombine(printable, "0X");
     }
     printable = strcombine(printable,
-        middle_fill(format, ft_strlen(converted_value)));
+        middle_u_fill(format, ft_strlen(converted_value)));
     printable = strcombine(printable, converted_value);
     printable = strcombine(printable,
-        right_fill(format, ft_strlen(converted_value)));
+        right_u_fill(format, ft_strlen(converted_value)));
     ft_strdel(&converted_value);
     return (printable);
 }

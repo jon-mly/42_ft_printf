@@ -39,7 +39,7 @@ char            *print_wstring(va_list args, t_format *format)
     if (wstrlen(format->type.wstr) >= format->width)
         return (wstrconvert(format->type.wstr));
     spaces = ft_strnew(format->width - wstrlen(format->type.wstr));
-    ft_memset(spaces, format->width - wstrlen(format->type.wstr), ' ');
+    ft_memset(spaces, ' ', format->width - wstrlen(format->type.wstr));
     if (format->minus_flag)
         printable = ft_strjoin(wstrconvert(format->type.wstr), spaces);
     else

@@ -35,8 +35,9 @@ char    *ft_absolute_signed_itoa(intmax_t nb)
     int     j;
     char    *str;
 
+	nb = (nb < 0) ? nb * -1 : nb;
     if (nb == 0)
-		return ("0\n");
+		return (ft_strdup("0\n"));
 	size = len(nb);
 	if (!(str = ft_strnew(size)))
 		return (0);

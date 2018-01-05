@@ -16,12 +16,12 @@ char     *print_char(va_list args, t_format *format)
     printable = ft_strnew(format->width);
     if (format->minus_flag)
     {
-        ft_memset(printable + 1, format->width - 1, ' ');
+        ft_memset(printable + 1, ' ', format->width - 1);
         printable[0] = format->type.c;
     }
     else
     {
-        ft_memset(printable, format->width - 1, ' ');
+        ft_memset(printable, ' ', format->width - 1);
         printable[format->width - 1] = format->type.c;
     }
     return (printable);

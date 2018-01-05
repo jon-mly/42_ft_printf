@@ -3,9 +3,11 @@
 /*
 ** Regroups the functions to handle format indicators, size modificators and
 ** type specification (for a given char).
+** FIXME: bad space managment !
+** FIXME: bad "hh" and "ll" managment as can't be embed in "while" loop
 */
 
-int     fetch_format_indicators(char *position, t_format *format)
+int     fetch_format_indicators(const char *position, t_format *format)
 {
     if (!(ft_char_search(position, "#0-+ ")))
         return (0);
@@ -25,7 +27,7 @@ int     fetch_format_indicators(char *position, t_format *format)
     return (1);
 }
 
-int     fetch_size_modificators(char *position, t_format *format)
+int     fetch_size_modificators(const char *position, t_format *format)
 {
     if (!(ft_char_search(position, "hljz")))
         return (0);
@@ -48,7 +50,7 @@ int     fetch_size_modificators(char *position, t_format *format)
     return (1);
 }
 
-int     fetch_type_descriptor(char *position, t_format *format)
+int     fetch_type_descriptor(const char *position, t_format *format)
 {
     if (!(ft_char_search(position, "sScCdDioOuUxXp")))
         return (0);
