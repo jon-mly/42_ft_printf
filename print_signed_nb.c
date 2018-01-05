@@ -86,15 +86,10 @@ char    *middle_fill(t_format *format, int nb_len)
             format->space_flag);
     else
         len = 0;
-ft_putstr("LEN : "); ft_putnbr(len); ft_putchar('\n');
     if (len <= 0)
         return (ft_strdup(""));
-ft_putendl("STEP 6.1");
     fill = ft_strnew(len);
-ft_putendl("STEP 6.2");
     ft_memset(fill, '0', len);
-ft_putendl("STEP 6.3");
-ft_putendl(fill);
     return (fill);
 }
 
@@ -106,14 +101,13 @@ char    *right_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
+    int     max_nb_len;
 
     if (format->minus_flag)
     {
-        if (format->width > nb_len)
-            len = format->width - nb_len -
-                (format->plus_flag || format->space_flag);
-        else if (format->width > format->precision)
-            len = format->width - format->precision -
+        max_nb_len = (nb_len > format->precision) ? nb_len : format->precision;
+        if (format->width > max_nb_len)
+            len = format->width - max_nb_len -
                 (format->plus_flag || format->space_flag);
         else
             len = 0;
@@ -130,18 +124,11 @@ char    *print_signed_nb(va_list args, t_format *format)
     char    *printable;
     char    *converted_value;
 
-ft_putendl("STEP 1");
     load_signed_type(format, args);
-ft_putendl("STEP 2");
     converted_value = ft_absolute_signed_itoa(format->type.imax);
-ft_putendl(converted_value);
-ft_putendl("STEP 3");
     printable = ft_strnew(0);
-ft_putendl("STEP 4");
     printable = strcombine(printable,
         left_fill(format, ft_strlen(converted_value)));
-ft_putendl(printable);
-ft_putendl("STEP 5");
     if (format->type.imax < 0 || format->plus_flag || format->space_flag)
     {
         if (format->type.imax < 0)
@@ -150,12 +137,9 @@ ft_putendl("STEP 5");
             format->space_flag))
             printable = strcombine(printable, (format->plus_flag) ? ft_strdup("+") : ft_strdup(" "));
     }
-ft_putendl("STEP 6");
     printable = strcombine(printable,
         middle_fill(format, ft_strlen(converted_value)));
-ft_putendl("STEP 7");
     printable = strcombine(printable, converted_value);
-ft_putendl("STEP 8");
     printable = strcombine(printable,
         right_fill(format, ft_strlen(converted_value)));
     return (printable);

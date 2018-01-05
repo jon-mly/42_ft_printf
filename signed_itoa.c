@@ -37,11 +37,11 @@ char    *ft_absolute_signed_itoa(intmax_t nb)
 
 	nb = (nb < 0) ? nb * -1 : nb;
     if (nb == 0)
-		return (ft_strdup("0\n"));
+		return (ft_strdup("0"));
 	size = len(nb);
 	if (!(str = ft_strnew(size)))
 		return (0);
 	fill_str(nb, str, size);
-	str[size + (nb < 0)] = '\0';
+	str[size] = '\0';
 	return (str);
 }

@@ -57,7 +57,7 @@ char            *ft_unsigned_itoa_base(uintmax_t nb, t_format *format)
 	base = base_str(format);
 	size = len(nb, base);
     if (nb == 0)
-        return ("0");
+        return (ft_strdup("0"));
 	if (!(str = ft_strnew(size)))
 		return (0);
 	fill_str(nb, str, base);

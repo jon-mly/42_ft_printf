@@ -65,10 +65,10 @@ char    *left_u_fill(t_format *format, int nb_len)
             len = 0;
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
-        ft_memset(fill, len, ' ');
+        ft_memset(fill, ' ', len);
         return (fill);
     }
-    return ("");
+    return (ft_strdup(""));
 }
 
 /*
@@ -98,7 +98,7 @@ char    *middle_u_fill(t_format *format, int nb_len)
         len = 0;
     len = (len < 0) ? 0 : len;
     fill = ft_strnew(len);
-    ft_memset(fill, len, '0');
+    ft_memset(fill, '0', len);
     return (fill);
 }
 
@@ -113,7 +113,7 @@ char    *right_u_fill(t_format *format, int nb_len)
 
     if (!(format->minus_flag && format->precision < 0 &&
         format->width > nb_len))
-        return ("");
+        return (ft_strdup(""));
     len = format->width - nb_len;
     if (format->sharp_flag && format->o_type)
         len -= 1;
@@ -121,7 +121,7 @@ char    *right_u_fill(t_format *format, int nb_len)
         len -= 2;
     len = (len < 0) ? 0 : len;
     fill = ft_strnew(len);
-    ft_memset(fill, len, ' ');
+    ft_memset(fill, ' ', len);
     return (fill);
 }
 
@@ -138,17 +138,16 @@ char    *print_unsigned_nb(va_list args, t_format *format)
     if (format->sharp_flag && format->type.uimax > 0)
     {
         if (format->o_type)
-            printable = strcombine(printable, "0");
+            printable = strcombine(printable, ft_strdup("0"));
         else if (format->x_type)
-            printable = strcombine(printable, "0x");
+            printable = strcombine(printable, ft_strdup("0x"));
         else if (format->X_type)
-            printable = strcombine(printable, "0X");
+            printable = strcombine(printable, ft_strdup("0X"));
     }
     printable = strcombine(printable,
         middle_u_fill(format, ft_strlen(converted_value)));
     printable = strcombine(printable, converted_value);
     printable = strcombine(printable,
         right_u_fill(format, ft_strlen(converted_value)));
-    ft_strdel(&converted_value);
     return (printable);
 }

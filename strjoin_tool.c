@@ -9,7 +9,8 @@ char    *strcombine(char *s1, char *s2)
     tmp = s2;
     if (ft_strlen(tmp) > 0)
         result = ft_strjoin(s1, tmp);
+    else
+        result = s1;
     ft_strdel(&tmp);
-ft_putendl("FREED");
     return (result);
 }

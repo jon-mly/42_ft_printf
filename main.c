@@ -3,7 +3,8 @@
 
 int     main(int ac, char **av)
 {
-    //printf("%u\n", 123);
-    ft_printf("%i\n", 12345);
+    char *str = "Salut";
+    ft_printf("%p\n", str);
+    //printf("%0d\n", 0);
     return (0);
 }
