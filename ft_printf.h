@@ -60,6 +60,12 @@ typedef struct  s_format
     t_type  type;
 }               t_format;
 
+typedef struct  s_result
+{
+    int     next_index;
+    char    *str;
+}               t_result;
+
 /*
 ** TYPEDEF DIVERS
 */

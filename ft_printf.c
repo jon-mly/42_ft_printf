@@ -44,10 +44,11 @@ t_format    *init_format(void)
     return (format);
 }
 
-char    *handle_flag(const char *str, va_list args, int i)
+t_result    *handle_flag(const char *str, va_list args, int i)
 {
     t_format    *format;
-    char        *res;
+    char        *printable;
+    t_result    *result;
 
     format = init_format();
     i++;
@@ -57,13 +58,17 @@ char    *handle_flag(const char *str, va_list args, int i)
     i += get_precision(str, format, i);
     while (fetch_size_modificators(&str[i], format))
         i++;
-    print_format(format);
-    if (!(res = type_print(args, format, str, i)))
+    //print_format(format);
+    if (!(printable = type_print(args, format, str, i)))
         return (NULL);
-    ft_putstr("RETOUR = '");
-    ft_putstr(res);
-    ft_putendl("'");
-    return ("");
+//ft_putstr("RETOUR = '");
+//ft_putstr(printable);
+//ft_putendl("'");
+    if (!(result = (t_result*)malloc(sizeof(t_result))))
+        return (NULL);
+    result->str = printable;
+    result->next_index = i;
+    return (result);
 }
 
 
@@ -71,18 +76,27 @@ int     ft_printf(const char *str, ...)
 {
     va_list     args;
     int         i;
+    int         printed_len;
+    t_result    *result;
 
     va_start(args, str);
     i = -1;
+    printed_len = 0;
     while (str[++i])
     {
-        if (str[i] == '%')
+        if (str[i] == '%' && (result = handle_flag(str, args, i)))
         {
-            char *test = handle_flag(str, args, i);
+            printed_len += ft_strlen(result->str);
+            ft_putstr(result->str);
+            i = result->next_index;
+            ft_memdel((void**)&result);
         }
         else
+        {
             ft_putchar(str[i]);
+            printed_len++;
+        }
     }
     va_end(args);
-	return (0);
+	return (printed_len);
 }

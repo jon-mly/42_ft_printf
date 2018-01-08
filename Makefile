@@ -1,5 +1,7 @@
 NAME = libftprintf.a
 
+TMP_LIB = libtmp.a
+
 FLAGS = -Wall -Werror -Wextra
 
 SRCS_REP = sources/
@@ -29,11 +31,15 @@ O_FILES = $(SRCS:.c=.o)
 
 INCLUDES = includes/
 
-$(NAME):
+$(LIBFT):
 	cd $(LIBFT_REP) && make
-	gcc  -I $(INCLUDES) -c $(SRCS) $(LIBFT)
-	ar rc $(NAME) $(O_FILES)
-	ranlib $(NAME)
+
+$(NAME): $(LIBFT)
+	gcc -I $(INCLUDES) -c $(SRCS)
+	ar -rc $(TMP_LIB) $(O_FILES)
+	ranlib $(TMP_LIB)
+	libtool -static -o $(NAME) $(TMP_LIB) $(LIBFT)
+	rm -f $(TMP_LIB)
 
 all: $(NAME)
 
