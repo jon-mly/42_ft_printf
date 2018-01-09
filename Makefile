@@ -20,6 +20,7 @@ SRCS =  ft_printf.c \
 		print_unsigned_nb.c \
 		print_wchar.c \
 		print_wstring.c \
+		print_percent.c \
 		signed_itoa.c \
 		strjoin_tool.c \
 		unsigned_itoa.c \

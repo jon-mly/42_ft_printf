@@ -126,6 +126,8 @@ char    *print_signed_nb(va_list args, t_format *format)
 
     load_signed_type(format, args);
     converted_value = ft_absolute_signed_itoa(format->type.imax);
+    if (format->type.imax == 0 && format->precision == 0)
+        converted_value = ft_strnew(0);
     printable = ft_strnew(0);
     printable = strcombine(printable,
         left_fill(format, ft_strlen(converted_value)));

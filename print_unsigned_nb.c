@@ -132,6 +132,8 @@ char    *print_unsigned_nb(va_list args, t_format *format)
 
     load_unsigned_type(format, args);
     converted_value = ft_unsigned_itoa_base(format->type.uimax, format);
+    if (format->type.uimax == 0 && format->precision == 0)
+        converted_value = ft_strnew(0);
     printable = ft_strnew(0);
     printable = strcombine(printable,
         left_u_fill(format, ft_strlen(converted_value)));

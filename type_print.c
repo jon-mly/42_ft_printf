@@ -14,7 +14,7 @@ void    set_format_unsigned(t_format *format, char type)
 
 char    *type_print(va_list args, t_format *format, const char *str, int i)
 {
-    if (!(ft_char_search(str + i, "sSdDioOuUxXpcC")))
+    if (!(ft_char_search(str + i, "sSdDioOuUxXpcC%")))
         return (NULL);
     if (ft_char_search(str + i, "s"))
         return (print_string(args, format));
@@ -33,5 +33,7 @@ char    *type_print(va_list args, t_format *format, const char *str, int i)
     }
     if (ft_char_search(str + i, "p"))
         return (print_pointer(args, format));
+    if (ft_char_search(str + i, "%"))
+        return (print_percent(format));
     return (NULL);
 }
