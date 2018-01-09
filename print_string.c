@@ -1,5 +1,22 @@
 #include "ft_printf.h"
 
+
+char    *precision_string(va_list args, t_format *format)
+{
+    char    *tmp;
+    char    *printable;
+
+    tmp = va_arg(args, char*);
+    if (tmp == NULL)
+        tmp = "(null)";
+    if (format->precision < 0 || ft_strlen(tmp) <= format->precision)
+        return (ft_strdup(tmp));
+    printable = ft_strnew(format->precision);
+    ft_strncpy(printable, tmp, format->precision);
+    return (printable);
+}
+
+
 char    *print_string(va_list args, t_format *format)
 {
     char    *printable;
@@ -7,7 +24,7 @@ char    *print_string(va_list args, t_format *format)
 
     if (format->l_flag)
         return (print_wstring(args, format));
-    format->type.str = va_arg(args, char*);
+    format->type.str = precision_string(args, format);
     if ((int)ft_strlen(format->type.str) >= format->width)
         return (format->type.str);
     spaces = ft_strnew(format->width - ft_strlen(format->type.str));
