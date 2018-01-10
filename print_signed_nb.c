@@ -48,13 +48,12 @@ char    *left_fill(t_format *format, int nb_len)
     int     len;
     int     max_len;
 
-    if (format->width > 0 && !(format->minus_flag) && !(format->zero_flag))
+    if (format->width > 0 && !(format->minus_flag) && (!(format->zero_flag) || format->precision > -1))
     {
-        nb_len += format->type.imax < 0;
         max_len = (nb_len > format->precision) ? nb_len : format->precision;
+        max_len += format->type.imax < 0 || format->plus_flag || format->space_flag;
         if (format->width > max_len)
-            len = format->width - max_len -
-                (format->plus_flag || format->space_flag);
+            len = format->width - max_len;
         else
             len = 0;
         len = (len < 0) ? 0 : len;
@@ -74,16 +73,16 @@ char    *middle_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
+    int     sign;
 
     // Precision wider than number len.
-    nb_len += format->type.imax < 0;
+    sign = format->type.imax < 0 || format->plus_flag || format->space_flag;
     if (format->precision >= 0 && format->precision > nb_len)
         len = format->precision - nb_len;
     // No precision, width wider than number len and '0' flag (implies no '-' flag)
-    else if (format->zero_flag && /*format->precision < 0 &&*/ format->width >= 0 &&
-        format->width > nb_len && !(format->minus_flag))
-        len = format->width - nb_len - (format->plus_flag ||
-            format->space_flag);
+    else if (format->zero_flag && format->width >= 0 &&
+        format->width > nb_len + sign && !(format->minus_flag))
+        len = format->width - nb_len - sign;
     else
         len = 0;
     if (len <= 0)
