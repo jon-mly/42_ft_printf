@@ -36,7 +36,7 @@ $(LIBFT):
 	cd $(LIBFT_REP) && make
 
 $(NAME): $(LIBFT)
-	gcc -I $(INCLUDES) -c $(SRCS)
+	gcc $(FLAGS) -I $(INCLUDES) -c $(SRCS)
 	ar -rc $(TMP_LIB) $(O_FILES)
 	ranlib $(TMP_LIB)
 	libtool -static -o $(NAME) $(TMP_LIB) $(LIBFT)

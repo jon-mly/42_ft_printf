@@ -9,7 +9,7 @@ char    *precision_string(va_list args, t_format *format)
     tmp = va_arg(args, char*);
     if (tmp == NULL)
         tmp = "(null)";
-    if (format->precision < 0 || ft_strlen(tmp) <= format->precision)
+    if (format->precision < 0 || (int)ft_strlen(tmp) <= format->precision)
         return (ft_strdup(tmp));
     printable = ft_strnew(format->precision);
     ft_strncpy(printable, tmp, format->precision);

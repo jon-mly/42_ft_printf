@@ -49,10 +49,3 @@ int     fetch_size_modificators(const char *position, t_format *format)
     }
     return (1);
 }
-
-int     fetch_type_descriptor(const char *position, t_format *format)
-{
-    if (!(ft_char_search(position, "sScCdDioOuUxXp")))
-        return (0);
-    return (1);
-}

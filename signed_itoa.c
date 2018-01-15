@@ -32,9 +32,10 @@ static void	    fill_str(intmax_t nb, char *str, int size)
 char    *ft_absolute_signed_itoa(intmax_t nb)
 {
     int     size;
-    int     j;
     char    *str;
 
+	if (nb < -9223372036854775807)
+		return (ft_strdup("9223372036854775808"));
 	nb = (nb < 0) ? nb * -1 : nb;
     if (nb == 0)
 		return (ft_strdup("0"));

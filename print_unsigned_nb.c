@@ -23,12 +23,12 @@ void    load_unsigned_type(t_format *format, va_list args)
 
 void    load_unsigned_type(t_format *format, va_list args)
 {
-    if (format->hh_flag)
+    if (format->l_flag)
+        format->type.uimax = va_arg(args, unsigned long int);
+    else if (format->hh_flag)
         format->type.uimax = (unsigned char)va_arg(args, int);
     else if (format->h_flag)
         format->type.uimax = (unsigned short int)va_arg(args, int);
-    else if (format->l_flag)
-        format->type.uimax = va_arg(args, unsigned long int);
     else if (format->ll_flag)
         format->type.uimax = va_arg(args, unsigned long long int);
     else if (format->z_flag)
@@ -110,11 +110,12 @@ char    *right_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
+    int     max_len;
 
-    if (!(format->minus_flag && format->precision < 0 &&
-        format->width > nb_len))
-        return (ft_strdup(""));
-    len = format->width - nb_len;
+    max_len = (nb_len >= format->precision) ? nb_len : format->precision;
+    if (!(format->minus_flag && format->width > max_len))
+        return (ft_strnew(0));
+    len = format->width - max_len;
     if (format->sharp_flag && format->o_type)
         len -= 1;
     else if (format->sharp_flag && (format->x_type || format->X_type))
@@ -132,18 +133,18 @@ char    *print_unsigned_nb(va_list args, t_format *format)
 
     load_unsigned_type(format, args);
     converted_value = ft_unsigned_itoa_base(format->type.uimax, format);
-    if (format->type.uimax == 0 && format->precision == 0)
+    if (format->type.uimax == 0 && format->precision == 0 && !(format->u_type))
         converted_value = ft_strnew(0);
     printable = ft_strnew(0);
     printable = strcombine(printable,
         left_u_fill(format, ft_strlen(converted_value)));
-    if (format->sharp_flag && format->type.uimax > 0)
+    if (format->sharp_flag)
     {
-        if (format->o_type)
+        if (format->o_type && format->type.uimax > 0)
             printable = strcombine(printable, ft_strdup("0"));
-        else if (format->x_type)
+        else if (format->x_type && format->type.uimax > 0)
             printable = strcombine(printable, ft_strdup("0x"));
-        else if (format->X_type)
+        else if (format->X_type && format->type.uimax > 0)
             printable = strcombine(printable, ft_strdup("0X"));
     }
     printable = strcombine(printable,

@@ -58,12 +58,8 @@ t_result    *handle_flag(const char *str, va_list args, int i)
     i += get_precision(str, format, i);
     while (fetch_size_modificators(&str[i], format))
         i++;
-    //print_format(format);
     if (!(printable = type_print(args, format, str, i)))
         return (NULL);
-//ft_putstr("RETOUR = '");
-//ft_putstr(printable);
-//ft_putendl("'");
     if (!(result = (t_result*)malloc(sizeof(t_result))))
         return (NULL);
     result->str = printable;
