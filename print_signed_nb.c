@@ -108,7 +108,7 @@ char    *right_fill(t_format *format, int nb_len)
         max_nb_len = (nb_len > format->precision) ? nb_len : format->precision;
         if (format->width > max_nb_len)
             len = format->width - max_nb_len -
-                (format->plus_flag || format->space_flag);
+                ((format->plus_flag || format->space_flag) && format->type.imax >= 0);
         else
             len = 0;
         len = (len < 0) ? 0 : len;
