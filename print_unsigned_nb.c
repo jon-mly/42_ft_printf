@@ -23,18 +23,18 @@ void    load_unsigned_type(t_format *format, va_list args)
 
 void    load_unsigned_type(t_format *format, va_list args)
 {
-    if (format->l_flag)
-        format->type.uimax = va_arg(args, unsigned long int);
-    else if (format->hh_flag)
-        format->type.uimax = (unsigned char)va_arg(args, int);
-    else if (format->h_flag)
-        format->type.uimax = (unsigned short int)va_arg(args, int);
+    if (format->j_flag)
+        format->type.uimax = va_arg(args, uintmax_t);
     else if (format->ll_flag)
         format->type.uimax = va_arg(args, unsigned long long int);
     else if (format->z_flag)
         format->type.uimax = va_arg(args, size_t);
-    else if (format->j_flag)
-        format->type.uimax = va_arg(args, uintmax_t);
+    else if (format->l_flag)
+        format->type.uimax = va_arg(args, unsigned long int);
+    else if (format->h_flag)
+        format->type.uimax = (unsigned short int)va_arg(args, int);
+    else if (format->hh_flag)
+        format->type.uimax = (unsigned char)va_arg(args, int);
     else
         format->type.uimax = va_arg(args, unsigned int);
 }

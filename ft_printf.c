@@ -58,12 +58,14 @@ t_result    *handle_flag(const char *str, va_list args, int i)
     i += get_precision(str, format, i);
     while (fetch_size_modificators(&str[i], format))
         i++;
-    if (!(printable = type_print(args, format, str, i)))
-        return (NULL);
     if (!(result = (t_result*)malloc(sizeof(t_result))))
         return (NULL);
+    result->str = "";
+    result->next_index = i - 1;
+    if (!(printable = type_print(args, format, str, i)))
+        return (result);
     result->str = printable;
-    result->next_index = i;
+    result->next_index++;
     return (result);
 }
 

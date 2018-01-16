@@ -22,18 +22,18 @@ void    load_signed_type(t_format *format, va_list args)
 */
 void    load_signed_type(t_format *format, va_list args)
 {
-    if (format->hh_flag)
-        format->type.imax = (char)va_arg(args, int);
-    else if (format->h_flag)
-        format->type.imax = (short int)va_arg(args, int);
-    else if (format->l_flag)
-        format->type.imax = va_arg(args, long int);
+    if (format->j_flag)
+        format->type.imax = va_arg(args, intmax_t);
     else if (format->ll_flag)
         format->type.imax = va_arg(args, long long int);
+    else if (format->l_flag)
+        format->type.imax = va_arg(args, long int);
     else if (format->z_flag)
         format->type.imax = va_arg(args, size_t);
-    else if (format->j_flag)
-        format->type.imax = va_arg(args, intmax_t);
+    else if (format->h_flag)
+        format->type.imax = (short int)va_arg(args, int);
+    else if (format->hh_flag)
+        format->type.imax = (char)va_arg(args, int);
     else
         format->type.imax = va_arg(args, int);
 }
