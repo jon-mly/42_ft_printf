@@ -63,7 +63,7 @@ typedef struct  s_format
 typedef struct  s_result
 {
     int     next_index;
-    char    *str;
+    int     printed_len;
 }               t_result;
 
 /*
@@ -77,15 +77,17 @@ typedef void (*t_fn)(va_list, t_format*);
 */
 
 int     ft_printf(const char *format, ...);
-char     *print_char(va_list args, t_format *format);
-char    *print_signed_nb(va_list args, t_format *format);
-char    *print_string(va_list args, t_format *format);
-char            *print_wstring(va_list args, t_format *format);
-char     *print_wchar(va_list args, t_format *format);
-char    *print_unsigned_nb(va_list args, t_format *format);
-char    *print_pointer(va_list args, t_format *format);
-char    *print_percent(t_format *format);
-char    *print_no_flag(char c, t_format *format);
+int     ft_pop(char *str);
+int     ft_pop_unalloc(char *str);
+int     print_char(va_list args, t_format *format);
+int    print_signed_nb(va_list args, t_format *format);
+int    print_string(va_list args, t_format *format);
+int            print_wstring(va_list args, t_format *format);
+int     print_wchar(va_list args, t_format *format);
+int    print_unsigned_nb(va_list args, t_format *format);
+int    print_pointer(va_list args, t_format *format);
+int    print_percent(t_format *format);
+int    print_no_flag(char c, t_format *format);
 char            *get_converted_wchar(wchar_t wc);
 char            *ft_unsigned_itoa_base(uintmax_t nb, t_format *format);
 char    *ft_absolute_signed_itoa(intmax_t nb);
@@ -95,7 +97,7 @@ int     fetch_format_indicators(const char *position, t_format *format);
 int     fetch_size_modificators(const char *position, t_format *format);
 int     get_precision(const char *str, t_format *format, int i);
 int     get_width(const char *str, t_format *format, int i);
-char    *type_print(va_list args, t_format *format, const char *str, int i);
+int     type_print(va_list args, t_format *format, const char *str, int i);
 char    *get_required_spaces(t_format *format, int len);
 
 #endif

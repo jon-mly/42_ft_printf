@@ -22,14 +22,14 @@ static char    *precision_string(va_list args, t_format *format)
     if (tmp == NULL)
         tmp = "(null)";
     if (format->precision < 0 || (int)ft_strlen(tmp) <= format->precision)
-        return (ft_strdup(tmp));
+        return (tmp);
     printable = ft_strnew(format->precision);
     ft_strncpy(printable, tmp, format->precision);
     return (printable);
 }
 
 
-char    *print_string(va_list args, t_format *format)
+int     print_string(va_list args, t_format *format)
 {
     char    *printable;
     char    *spaces;
@@ -38,7 +38,7 @@ char    *print_string(va_list args, t_format *format)
         return (print_wstring(args, format));
     format->type.str = precision_string(args, format);
     if ((int)ft_strlen(format->type.str) >= format->width)
-        return (format->type.str);
+        return (ft_pop_unalloc(format->type.str));
     spaces = get_required_spaces(format, format->width -
         ft_strlen(format->type.str));
     if (format->minus_flag)
@@ -46,5 +46,5 @@ char    *print_string(va_list args, t_format *format)
     else
         printable = ft_strjoin(spaces, format->type.str);
     ft_strdel(&spaces);
-    return (printable);
+    return (ft_pop(printable));
 }

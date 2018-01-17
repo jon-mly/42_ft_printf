@@ -11,6 +11,7 @@ LIBFT_REP = libft/
 LIBFT = $(LIBFT_REP)libft.a
 
 SRCS =  ft_printf.c \
+		ft_pop.c \
 		flags_handling.c \
 		description_string_analysis_tools.c \
 		print_char.c \

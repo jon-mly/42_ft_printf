@@ -1,26 +1,5 @@
 #include "ft_printf.h"
 
-// TRY: all values should be put in a uintmax_t object (uimax)
-/*
-void    load_unsigned_type(t_format *format, va_list args)
-{
-    if (format->hh_flag)
-        format->type.uc = va_arg(args, char);
-    else if (format->h_flag)
-        format->type.usi = va_arg(args, short int);
-    else if (format->l_flag)
-        format->type.ul = va_arg(args, long int);
-    else if (format->ll_flag)
-        format->type.ull = va_arg(args, long long int);
-    else if (format->z_flag)
-        format->type.st = va_arg(args, size_t);
-    else if (format->j_flag)
-        format->type.uimax = va_arg(args, intmax_t);
-    else
-        format->type.ui = va_arg(args, int);
-}
-*/
-
 void    load_unsigned_type(t_format *format, va_list args)
 {
     if (format->j_flag)
@@ -43,7 +22,7 @@ void    load_unsigned_type(t_format *format, va_list args)
 ** Return the elements to be added before any sign
 ** Only concerns width without '-' or '0' flags
 */
-char    *left_u_fill(t_format *format, int nb_len)
+int     left_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -66,9 +45,9 @@ char    *left_u_fill(t_format *format, int nb_len)
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
         ft_memset(fill, ' ', len);
-        return (fill);
+        return (ft_pop(fill));
     }
-    return (ft_strdup(""));
+    return (0);
 }
 
 /*
@@ -76,7 +55,7 @@ char    *left_u_fill(t_format *format, int nb_len)
 ** If width + precision, concerns precision. If no precision, width.
 ** '0' flag is handled here.
 */
-char    *middle_u_fill(t_format *format, int nb_len)
+int     middle_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -99,14 +78,14 @@ char    *middle_u_fill(t_format *format, int nb_len)
     len = (len < 0) ? 0 : len;
     fill = ft_strnew(len);
     ft_memset(fill, '0', len);
-    return (fill);
+    return (ft_pop(fill));
 }
 
 /*
 ** Return the spaces to be added right after the number
 ** Only concerns minus flag if no precision
 */
-char    *right_u_fill(t_format *format, int nb_len)
+int     right_u_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -114,7 +93,7 @@ char    *right_u_fill(t_format *format, int nb_len)
 
     max_len = (nb_len >= format->precision) ? nb_len : format->precision;
     if (!(format->minus_flag && format->width > max_len))
-        return (ft_strnew(0));
+        return (0);
     len = format->width - max_len;
     if (format->sharp_flag && format->o_type)
         len -= 1;
@@ -123,34 +102,30 @@ char    *right_u_fill(t_format *format, int nb_len)
     len = (len < 0) ? 0 : len;
     fill = ft_strnew(len);
     ft_memset(fill, ' ', len);
-    return (fill);
+    return (ft_pop(fill));
 }
 
-char    *print_unsigned_nb(va_list args, t_format *format)
+int     print_unsigned_nb(va_list args, t_format *format)
 {
-    char    *printable;
+    int     total_len;
     char    *converted_value;
 
     load_unsigned_type(format, args);
     converted_value = ft_unsigned_itoa_base(format->type.uimax, format);
     if (format->type.uimax == 0 && format->precision == 0)
         converted_value = ft_strnew(0);
-    printable = ft_strnew(0);
-    printable = strcombine(printable,
-        left_u_fill(format, ft_strlen(converted_value)));
+    total_len = left_u_fill(format, ft_strlen(converted_value));
     if (format->sharp_flag)
     {
-        if (format->o_type) // && format->type.uimax > 0)
-            printable = strcombine(printable, ft_strdup("0"));
+        if (format->o_type && !(format->type.uimax == 0 && format->precision < 0))
+            total_len += ft_pop_unalloc("0");
         else if (format->x_type && format->type.uimax > 0)
-            printable = strcombine(printable, ft_strdup("0x"));
+            total_len += ft_pop_unalloc("0x");
         else if (format->X_type && format->type.uimax > 0)
-            printable = strcombine(printable, ft_strdup("0X"));
+            total_len += ft_pop_unalloc("0X");
     }
-    printable = strcombine(printable,
-        middle_u_fill(format, ft_strlen(converted_value)));
-    printable = strcombine(printable, converted_value);
-    printable = strcombine(printable,
-        right_u_fill(format, ft_strlen(converted_value)));
-    return (printable);
+    total_len += middle_u_fill(format, ft_strlen(converted_value));
+    total_len += ft_pop(converted_value);
+    total_len += right_u_fill(format, ft_strlen(converted_value));
+    return (total_len);
 }

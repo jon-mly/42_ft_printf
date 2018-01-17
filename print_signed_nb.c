@@ -1,25 +1,5 @@
 #include "ft_printf.h"
 
-// TRY: all values should be put in a intmax_t object (imax)
-/*
-void    load_signed_type(t_format *format, va_list args)
-{
-    if (format->hh_flag)
-        format->type.c = va_arg(args, char);
-    else if (format->h_flag)
-        format->type.si = va_arg(args, short int);
-    else if (format->l_flag)
-        format->type.l = va_arg(args, long int);
-    else if (format->ll_flag)
-        format->type.ll = va_arg(args, long long int);
-    else if (format->z_flag)
-        format->type.st = va_arg(args, size_t);
-    else if (format->j_flag)
-        format->type.imax = va_arg(args, intmax_t);
-    else
-        format->type.i = va_arg(args, int);
-}
-*/
 void    load_signed_type(t_format *format, va_list args)
 {
     if (format->j_flag)
@@ -42,7 +22,7 @@ void    load_signed_type(t_format *format, va_list args)
 ** Return the elements to be added before any sign
 ** Only concerns width without '-' or '0' flags
 */
-char    *left_fill(t_format *format, int nb_len)
+int     left_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -59,9 +39,9 @@ char    *left_fill(t_format *format, int nb_len)
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
         ft_memset(fill, ' ', len);
-        return (fill);
+        return (ft_pop(fill));
     }
-    return (ft_strdup(""));
+    return (0);
 }
 
 /*
@@ -69,7 +49,7 @@ char    *left_fill(t_format *format, int nb_len)
 ** If width + precision, concerns precision. If no precision, width.
 ** '0' flag is handled here.
 */
-char    *middle_fill(t_format *format, int nb_len)
+int     middle_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -86,17 +66,17 @@ char    *middle_fill(t_format *format, int nb_len)
     else
         len = 0;
     if (len <= 0)
-        return (ft_strdup(""));
+        return (0);
     fill = ft_strnew(len);
     ft_memset(fill, '0', len);
-    return (fill);
+    return (ft_pop(fill));
 }
 
 /*
 ** Return the spaces to be added right after the number
 ** Only concerns minus flag
 */
-char    *right_fill(t_format *format, int nb_len)
+int     right_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
@@ -114,35 +94,31 @@ char    *right_fill(t_format *format, int nb_len)
         len = (len < 0) ? 0 : len;
         fill = ft_strnew(len);
         ft_memset(fill, ' ', len);
-        return (fill);
+        return (ft_pop(fill));
     }
-    return (ft_strdup(""));
+    return (0);
 }
 
-char    *print_signed_nb(va_list args, t_format *format)
+int     print_signed_nb(va_list args, t_format *format)
 {
-    char    *printable;
+    int     total_len;
     char    *converted_value;
 
     load_signed_type(format, args);
     converted_value = ft_absolute_signed_itoa(format->type.imax);
     if (format->type.imax == 0 && format->precision == 0)
         converted_value = ft_strnew(0);
-    printable = ft_strnew(0);
-    printable = strcombine(printable,
-        left_fill(format, ft_strlen(converted_value)));
+    total_len = left_fill(format, ft_strlen(converted_value));
     if (format->type.imax < 0 || format->plus_flag || format->space_flag)
     {
         if (format->type.imax < 0)
-            printable = strcombine(printable, ft_strdup("-"));
+            total_len += ft_pop_unalloc("-");
         else if (format->type.imax >= 0 && (format->plus_flag ||
             format->space_flag))
-            printable = strcombine(printable, (format->plus_flag) ? ft_strdup("+") : ft_strdup(" "));
+            total_len += ft_pop_unalloc((format->plus_flag) ? "+" : " ");
     }
-    printable = strcombine(printable,
-        middle_fill(format, ft_strlen(converted_value)));
-    printable = strcombine(printable, converted_value);
-    printable = strcombine(printable,
-        right_fill(format, ft_strlen(converted_value)));
-    return (printable);
+    total_len += middle_fill(format, ft_strlen(converted_value));
+    total_len += ft_pop(converted_value);
+    total_len += right_fill(format, ft_strlen(converted_value));
+    return (total_len);
 }

@@ -1,6 +1,6 @@
 #include "ft_printf.h"
 
-char    *print_no_flag(char c, t_format *format)
+int     print_no_flag(char c, t_format *format)
 {
     char    *printable;
 
@@ -9,7 +9,7 @@ char    *print_no_flag(char c, t_format *format)
     {
         printable = ft_strnew(1);
         printable[0] = format->type.c;
-        return (printable);
+        return (ft_pop(printable));
     }
     printable = ft_strnew(format->width);
     if (format->minus_flag)
@@ -22,5 +22,5 @@ char    *print_no_flag(char c, t_format *format)
         ft_memset(printable, (format->zero_flag) ? '0' : ' ', format->width - 1);
         printable[format->width - 1] = format->type.c;
     }
-    return (printable);
+    return (ft_pop(printable));
 }

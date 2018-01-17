@@ -12,27 +12,27 @@ char    *fill_printable(char *converted_wchar, char *printable, int index)
     return (printable);
 }
 
-char     *print_wchar(va_list args, t_format *format)
+static int     ft_pop_wchar(char *str)
 {
-    char    *printable;
+    if (*str)
+        return (ft_pop(str));
+    ft_putchar(0);
+    return (1);
+}
+
+int     print_wchar(va_list args, t_format *format)
+{
+    char    *spaces;
     char    *converted_wchar;
 
     format->type.wc = va_arg(args, wchar_t);
     converted_wchar = get_converted_wchar(format->type.wc);
     if (format->width <= 1)
-        return (converted_wchar);
-    printable = ft_strnew(format->width - ft_strlen(converted_wchar));
+        return (ft_pop_wchar(converted_wchar));
+    spaces = ft_strnew(format->width - ft_strlen(converted_wchar));
+    ft_memset(spaces, ' ', format->width - ft_strlen(converted_wchar));
     if (format->minus_flag)
-    {
-        ft_memset(printable + ft_strlen(converted_wchar), ' ',
-            format->width - ft_strlen(converted_wchar));
-        printable = fill_printable(converted_wchar, printable, 0);
-    }
+        return (ft_pop_wchar(converted_wchar) + ft_pop(spaces));
     else
-    {
-        ft_memset(printable, ' ', format->width - ft_strlen(converted_wchar));
-        printable = fill_printable(converted_wchar, printable,
-            format->width - ft_strlen(converted_wchar));
-    }
-    return (printable);
+        return (ft_pop(spaces) + ft_pop_wchar(converted_wchar));
 }
