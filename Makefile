@@ -20,6 +20,8 @@ SRCS =  ft_printf.c \
 		print_unsigned_nb.c \
 		print_wchar.c \
 		print_wstring.c \
+		print_percent.c \
+		print_no_flag.c \
 		signed_itoa.c \
 		strjoin_tool.c \
 		unsigned_itoa.c \
@@ -35,7 +37,7 @@ $(LIBFT):
 	cd $(LIBFT_REP) && make
 
 $(NAME): $(LIBFT)
-	gcc -I $(INCLUDES) -c $(SRCS)
+	gcc $(FLAGS) -I $(INCLUDES) -c $(SRCS)
 	ar -rc $(TMP_LIB) $(O_FILES)
 	ranlib $(TMP_LIB)
 	libtool -static -o $(NAME) $(TMP_LIB) $(LIBFT)

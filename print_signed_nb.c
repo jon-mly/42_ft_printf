@@ -22,18 +22,18 @@ void    load_signed_type(t_format *format, va_list args)
 */
 void    load_signed_type(t_format *format, va_list args)
 {
-    if (format->hh_flag)
-        format->type.imax = (char)va_arg(args, int);
-    else if (format->h_flag)
-        format->type.imax = (short int)va_arg(args, int);
-    else if (format->l_flag)
-        format->type.imax = va_arg(args, long int);
+    if (format->j_flag)
+        format->type.imax = va_arg(args, intmax_t);
     else if (format->ll_flag)
         format->type.imax = va_arg(args, long long int);
+    else if (format->l_flag)
+        format->type.imax = va_arg(args, long int);
     else if (format->z_flag)
         format->type.imax = va_arg(args, size_t);
-    else if (format->j_flag)
-        format->type.imax = va_arg(args, intmax_t);
+    else if (format->h_flag)
+        format->type.imax = (short int)va_arg(args, int);
+    else if (format->hh_flag)
+        format->type.imax = (char)va_arg(args, int);
     else
         format->type.imax = va_arg(args, int);
 }
@@ -48,12 +48,12 @@ char    *left_fill(t_format *format, int nb_len)
     int     len;
     int     max_len;
 
-    if (format->width > 0 && !(format->minus_flag) && !(format->zero_flag))
+    if (format->width > 0 && !(format->minus_flag) && (!(format->zero_flag) || format->precision > -1))
     {
         max_len = (nb_len > format->precision) ? nb_len : format->precision;
+        max_len += format->type.imax < 0 || format->plus_flag || format->space_flag;
         if (format->width > max_len)
-            len = format->width - max_len -
-                (format->plus_flag || format->space_flag);
+            len = format->width - max_len;
         else
             len = 0;
         len = (len < 0) ? 0 : len;
@@ -73,17 +73,16 @@ char    *middle_fill(t_format *format, int nb_len)
 {
     char    *fill;
     int     len;
+    int     sign;
 
     // Precision wider than number len.
+    sign = format->type.imax < 0 || format->plus_flag || format->space_flag;
     if (format->precision >= 0 && format->precision > nb_len)
         len = format->precision - nb_len;
-        //len = format->precision - nb_len - (format->plus_flag ||
-            //format->space_flag);
     // No precision, width wider than number len and '0' flag (implies no '-' flag)
-    else if (format->zero_flag && format->precision < 0 && format->width >= 0 &&
-        format->width > nb_len && !(format->minus_flag))
-        len = format->width - nb_len - (format->plus_flag ||
-            format->space_flag);
+    else if (format->zero_flag && format->width >= 0 &&
+        format->width > nb_len + sign && !(format->minus_flag))
+        len = format->width - nb_len - sign;
     else
         len = 0;
     if (len <= 0)
@@ -103,12 +102,13 @@ char    *right_fill(t_format *format, int nb_len)
     int     len;
     int     max_nb_len;
 
+    nb_len += format->type.imax < 0;
     if (format->minus_flag)
     {
         max_nb_len = (nb_len > format->precision) ? nb_len : format->precision;
         if (format->width > max_nb_len)
             len = format->width - max_nb_len -
-                (format->plus_flag || format->space_flag);
+                ((format->plus_flag || format->space_flag) && format->type.imax >= 0);
         else
             len = 0;
         len = (len < 0) ? 0 : len;
@@ -126,6 +126,8 @@ char    *print_signed_nb(va_list args, t_format *format)
 
     load_signed_type(format, args);
     converted_value = ft_absolute_signed_itoa(format->type.imax);
+    if (format->type.imax == 0 && format->precision == 0)
+        converted_value = ft_strnew(0);
     printable = ft_strnew(0);
     printable = strcombine(printable,
         left_fill(format, ft_strlen(converted_value)));

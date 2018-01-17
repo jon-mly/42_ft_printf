@@ -1,25 +1,10 @@
 #include "ft_printf.h"
 
-char    load_char(va_list args)
-{
-    char    c;
-
-    c = (char)va_arg(args, int);
-    if (c == 0)
-    {
-        ft_putchar('^');
-        return ('@');
-    }
-    return (c);
-}
-
-char     *print_char(va_list args, t_format *format)
+char    *print_no_flag(char c, t_format *format)
 {
     char    *printable;
 
-    if (format->l_flag)
-        return (print_wchar(args, format));
-    format->type.c = load_char(args);
+    format->type.c = c;
     if (format->width <= 1)
     {
         printable = ft_strnew(1);
@@ -34,7 +19,7 @@ char     *print_char(va_list args, t_format *format)
     }
     else
     {
-        ft_memset(printable, ' ', format->width - 1);
+        ft_memset(printable, (format->zero_flag) ? '0' : ' ', format->width - 1);
         printable[format->width - 1] = format->type.c;
     }
     return (printable);

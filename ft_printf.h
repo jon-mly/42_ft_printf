@@ -84,6 +84,8 @@ char            *print_wstring(va_list args, t_format *format);
 char     *print_wchar(va_list args, t_format *format);
 char    *print_unsigned_nb(va_list args, t_format *format);
 char    *print_pointer(va_list args, t_format *format);
+char    *print_percent(t_format *format);
+char    *print_no_flag(char c, t_format *format);
 char            *get_converted_wchar(wchar_t wc);
 char            *ft_unsigned_itoa_base(uintmax_t nb, t_format *format);
 char    *ft_absolute_signed_itoa(intmax_t nb);
@@ -94,5 +96,6 @@ int     fetch_size_modificators(const char *position, t_format *format);
 int     get_precision(const char *str, t_format *format, int i);
 int     get_width(const char *str, t_format *format, int i);
 char    *type_print(va_list args, t_format *format, const char *str, int i);
+char    *get_required_spaces(t_format *format, int len);
 
 #endif
