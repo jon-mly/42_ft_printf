@@ -17,8 +17,7 @@ void    set_format_unsigned(t_format *format, char type)
 int     type_print(va_list args, t_format *format, const char *str, int i)
 {
     if (!(ft_char_search(str + i, "sSdDioOuUxXpcC%")))
-        return (-1);
-       //return ((str[i]) ? print_no_flag(format,  str[i]) : 0);
+       return ((str[i]) ? print_no_flag(format,  str[i]) : 0);
     if (str[i] == 's')
         return (print_string(args, format));
     if (str[i] == 'S')
