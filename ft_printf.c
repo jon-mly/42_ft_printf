@@ -40,7 +40,9 @@ t_result    *handle_flag(const char *str, va_list args, int i)
         return (NULL);
     result->printed_len = 0;
     result->next_index = i - 1;
-    if ((printed_len = type_print(args, format, str, i)) < 0)
+    printed_len = type_print(args, format, str, i);
+    ft_memdel((void**)&format);
+    if (printed_len < 0)
         return (result);
     result->printed_len = printed_len;
     result->next_index++;
@@ -64,6 +66,7 @@ int     ft_printf(const char *str, ...)
         {
             printed_len += result->printed_len;
             i = result->next_index;
+            ft_memdel((void**)&result);
         }
         else
         {
