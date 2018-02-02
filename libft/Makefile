@@ -64,7 +64,7 @@ FLAGS = -Wall -Werror -Wextra
 NAME = libft.a
 
 %.o: %.c
-	@gcc $(FLAGS) -c
+	@gcc -c $< -o $@
 
 $(NAME):
 	@gcc $(FLAGS) -c $(SRCS)
