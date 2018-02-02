@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signed_itoa.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmlynarc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/02 12:35:32 by jmlynarc          #+#    #+#             */
+/*   Updated: 2018/02/02 12:35:49 by jmlynarc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 /*
@@ -6,7 +18,7 @@
 
 static int		len(intmax_t nb)
 {
-	int len;
+	int		len;
 
 	len = 0;
 	while (nb != 0)
@@ -17,7 +29,7 @@ static int		len(intmax_t nb)
 	return (len);
 }
 
-static void	    fill_str(intmax_t nb, char *str, int size)
+static void		fill_str(intmax_t nb, char *str, int size)
 {
 	int		i;
 
@@ -29,15 +41,15 @@ static void	    fill_str(intmax_t nb, char *str, int size)
 	}
 }
 
-char    *ft_absolute_signed_itoa(intmax_t nb)
+char			*ft_absolute_signed_itoa(intmax_t nb)
 {
-    int     size;
-    char    *str;
+	int		size;
+	char	*str;
 
 	if (nb < -9223372036854775807)
 		return (ft_strdup("9223372036854775808"));
 	nb = (nb < 0) ? nb * -1 : nb;
-    if (nb == 0)
+	if (nb == 0)
 		return (ft_strdup("0"));
 	size = len(nb);
 	if (!(str = ft_strnew(size)))
